@@ -64,10 +64,10 @@ while difficulty <= 10:
         i = 'a'
         win = guess(difficulty)
       else:
-        print('ok, ggs!') #NOTE: this is intentional. I could implement a check for Y or n, but I think that if this were a person operating the game, and when they asked you whether or not another game would be started, and you said "banana," they'd just be wierded out and leave, thus not starting another game.
+        print('ok, ggs!') #NOTE: this is intentional. I could implement a check for Y or n, but I think that if this were a person operating the game, and when they asked you whether or not another game would be started, and you said "banana," they'd just be weirded out and leave, thus not starting another game.
         sys.exit()
   elif win == False:
     print('You lose, ggs though!')
     sys.exit() #lose
   else:
-    print("Looks like we're out of levels, ggs!")
+    print("Looks like we're out of levels, ggs!") #Should only come up on lvl 10 win
