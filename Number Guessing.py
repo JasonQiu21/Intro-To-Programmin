@@ -12,8 +12,8 @@ while difficulty == '':
       print('I said 1 to 10.')
   except ValueError: print("It seems that you don't know what a number is, or maybe you just lack common sense. Here, let me help. Choose 1,2,3,4,5,6,7,8,9, or 10.")
 
-#logic for guessing at level l
 def guess(l):
+  """Guess a random number from 1 to 10*l"""
   print(f'starting guessing game at level {l}...')
   guesses = guess_num
   guess = ''
