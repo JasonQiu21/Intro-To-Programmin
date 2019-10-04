@@ -66,6 +66,8 @@ while difficulty <= 10:
       else:
         print('ok, ggs!') #NOTE: this is intentional. I could implement a check for Y or n, but I think that if this were a person operating the game, and when they asked you whether or not another game would be started, and you said "banana," they'd just be wierded out and leave, thus not starting another game.
         sys.exit()
-  else:
+  elif win == False:
     print('You lose, ggs though!')
     sys.exit() #lose
+  else:
+    print("Looks like we're out of levels, ggs!")
