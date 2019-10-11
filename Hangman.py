@@ -1,3 +1,4 @@
+import getpass
 #Welcome to... HANGMAN
 print("welcome to...")
 print(""" _                                             
@@ -75,7 +76,7 @@ _|___""",
 _|___"""]
 
 win = False
-secret = str(input('Get someone else to give you a word:     '))
+secret = str(getpass.getpass('Get someone else to give you a word:     '))
 def split(word):
     """split string into list"""
     return [char for char in word]
