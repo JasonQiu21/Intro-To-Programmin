@@ -84,15 +84,18 @@ def split(word):
 def hangman(secret):
     """Play hangman with word secret"""
     #initial conditions - letters guessed wrong, variables used in computation, splitting the secret into an array (easier to work with)
-    a = 0
-    i = 5
+    
+    a = 0 #determines which ascii art of hangman to use
+    i = 5 #used to check how many guesses you have left - a counts up, i counts down
     wrong_guesses = []
-    correct = False
-    message = "_ "*len(secret)
+    correct = False #whether or not your last guess was correct
+    message = "_ "*len(secret) #begins as just all underscores, then those underscores get replaced
     s_list = split(secret)
-    current_state = states[a]
+    current_state = states[a] #the actual art that gets printed
     print(current_state)
     print(message)
+    
+    #main guess logic
     while i > 0:
         #guess prompt
         guess = str(input("guess a letter:     "))
@@ -125,6 +128,8 @@ def hangman(secret):
             i = 0
             return True
 win = hangman(secret)
+
+#display final message
 if win == True:
     print('You Win!')
 else:
