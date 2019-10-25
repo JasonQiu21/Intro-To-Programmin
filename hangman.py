@@ -1,4 +1,5 @@
 import getpass
+import string
 #Welcome to... HANGMAN
 print("welcome to...")
 print(""" _                                             
@@ -76,19 +77,42 @@ _|___""",
 _|___"""]
 
 win = False
-secret = str(getpass.getpass('Get someone else to give you a word:     '))
 
+def split(word):
+    """split string into list"""
+    return [char for char in word]
+
+def check_ascii(word):
+    """check if a word has only ascii letters"""
+    for i in word:
+        if i not in string.ascii_letters:
+            return False
+    return True
+
+def get_secret_word():
+    secret_word = str(getpass.getpass('Get someone else to give you a word:     ')).lower()
+    while check_ascii(secret_word) != True:
+        secret_word = str(getpass.getpass('Make sure the secret word is only the 26 english letters:     ')).lower()
+    return secret_word
+
+def get_user_guess():
+    """get player's guess, make sure is one letter"""
+    guess = str(input("guess a letter:     ")).lower()
+    while len(guess) != 1 or guess not in string.ascii_letters:
+        guess = str(input("guess a SINGLE letter:     ")).lower()
+    return guess
+
+
+
+#Initial Conditions
 a = 0 #determines which ascii art of hangman to use
 i = 5 #used to check how many guesses you have left - a counts up, i counts down
 wrong_guesses = []
 current_state = states[a] #the actual art that gets printed
 print(current_state)
+secret = get_secret_word()
 message = "_ "*len(secret) #begins as just all underscores, then those underscores get replaced
 print(message)
-
-def split(word):
-    """split string into list"""
-    return [char for char in word]
 
 def checkword(secret, guess):
     """Check if guess is secret word, replace the elements of message with the guess letter"""
@@ -113,7 +137,7 @@ def score_count(secret):
     global current_state
     #guess prompt
     correct = False #whether or not your last guess was correct
-    guess = str(input("guess a letter:     "))
+    guess = get_user_guess()
     
     correct = checkword(secret, guess)
 
@@ -136,13 +160,10 @@ def score_count(secret):
         i = 0
         return True
 
-
-#Main code
-
 while i > 0:
     win = score_count(secret)
 
-#display final message
+#display final messag
 if win == True:
     print('You Win!')
 else:
