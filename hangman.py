@@ -106,7 +106,7 @@ def get_user_guess():
 
 #Initial Conditions
 a = 0 #determines which ascii art of hangman to use
-i = 5 #used to check how many guesses you have left - a counts up, i counts down
+i = 6 #used to check how many guesses you have left - a counts up, i counts down
 wrong_guesses = []
 current_state = states[a] #the actual art that gets printed
 print(current_state)
@@ -119,13 +119,14 @@ def checkword(secret, guess):
     global message
     s_list = split(secret)
     m_list = split(message)
+    x = False
     for i in range(len(s_list)):
         if s_list[i] == guess:
             m_list.pop(i*2)
             m_list.insert(i*2,guess)
             message = ''.join(m_list)
-            return True
-    return False
+            x = True
+    return x
 
 def score_count(secret):
     """Guess, check if correct, then edit the wrong guesses"""
@@ -153,6 +154,7 @@ def score_count(secret):
             return False
         print(message)
     elif '_' in message and correct == True: #If your guess is right, and there are still letters to guess
+        print(f'wrong guesses: {wrong_guesses}')
         print(current_state)
         print(message)
         correct = False
@@ -165,6 +167,8 @@ while i > 0:
 
 #display final messag
 if win == True:
+    print(current_state)
+    print(message)
     print('You Win!')
 else:
     print('You Lose!')
