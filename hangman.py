@@ -77,12 +77,22 @@ _|___"""]
 
 win = False
 secret = str(getpass.getpass('Get someone else to give you a word:     '))
+
+a = 0 #determines which ascii art of hangman to use
+i = 5 #used to check how many guesses you have left - a counts up, i counts down
+wrong_guesses = []
+current_state = states[a] #the actual art that gets printed
+print(current_state)
+message = "_ "*len(secret) #begins as just all underscores, then those underscores get replaced
+print(message)
+
 def split(word):
     """split string into list"""
     return [char for char in word]
 
-def checkword(message, secret, guess):
+def checkword(secret, guess):
     """Check if guess is secret word, replace the elements of message with the guess letter"""
+    global message
     s_list = split(secret)
     m_list = split(message)
     for i in range(len(s_list)):
@@ -93,44 +103,44 @@ def checkword(message, secret, guess):
             return True
     return False
 
-def hangman(secret):
-    """Play hangman with word secret"""
+def score_count(secret):
+    """Guess, check if correct, then edit the wrong guesses"""
     #initial conditions - letters guessed wrong, variables used in computation, splitting the secret into an array (easier to work with)
     
-    a = 0 #determines which ascii art of hangman to use
-    i = 5 #used to check how many guesses you have left - a counts up, i counts down
-    wrong_guesses = []
+    global wrong_guesses
+    global a
+    global i
+    global current_state
+    #guess prompt
     correct = False #whether or not your last guess was correct
-    message = "_ "*len(secret) #begins as just all underscores, then those underscores get replaced
-    current_state = states[a] #the actual art that gets printed
-    print(current_state)
-    print(message)
+    guess = str(input("guess a letter:     "))
     
-    #main guess logic
-    while i > 0:
-        #guess prompt
-        guess = str(input("guess a letter:     "))
+    correct = checkword(secret, guess)
 
-        correct = checkword(message, secret, guess)
+    #print the next round's stuff
+    if correct == False: #If your guess is wrong
+        wrong_guesses.append(guess)
+        print(f'wrong guesses: {wrong_guesses}')
+        a += 1
+        i -= 1
+        current_state = states[a]
+        print(current_state)
+        if a == 6: #if all guesses are used up (hangman is fully drawn)
+            return False
+        print(message)
+    elif '_' in message and correct == True: #If your guess is right, and there are still letters to guess
+        print(current_state)
+        print(message)
+        correct = False
+    else: #Win condition - last letter guessed is right, no empty spcaes.
+        i = 0
+        return True
 
-        #print the next round's stuff
-        if correct == False: #If your guess is wrong
-            wrong_guesses.append(guess)
-            print(f'wrong guesses: {wrong_guesses}')
-            a += 1
-            i -= 1
-            current_state = states[a]
-            print(current_state)
-            if a == 6: #if all guesses are used up (hangman is fully drawn)
-                return False
-            print(message)
-        elif '_' in message and correct == True: #If your guess is right, and there are still letters to guess
-            print(current_state)
-            print(message)
-            correct = False
-        else: #Win condition - last letter guessed is right, no empty spcaes.
-            return True
-win = hangman(secret)
+
+#Main code
+
+while i > 0:
+    win = score_count(secret)
 
 #display final message
 if win == True:
