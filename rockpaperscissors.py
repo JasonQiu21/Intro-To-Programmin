@@ -26,7 +26,7 @@ def user_input():
     while i not in options:
         #while user hasn't picked rock, paper, scissors
         print()
-        i = str(input(f"No, {i} is not an option. Options: {options_string}. Let's try again. Rock, Paper, Scissors, Shoot!")).lower()
+        i = str(input(f"No, {i} is not an option. Options: {options_string}. Let's try again. Rock, Paper, Scissors, Shoot!     ")).lower()
     return i
 
 def computer_input():
@@ -56,12 +56,17 @@ def score_counter(result):
         score['player'] += 1
     print(f'Score: {score}')
 
+def determine_win(score_dict):
+    win_score = 0
+    winner = ''
+    for i, j in score.items():
+        if j > win_score:
+            winner = i
+            win_score = j
+    return winner
 #play till best of however many is determined
 while score['player'] <wins_to_win and score['computer'] <wins_to_win:
     score_counter(outcome(user_input(), computer_input()))
 
-#print final win/lose message
-if score['player'] == wins_to_win:
-    print(f'You win the best of {wins_to_win * 2 -1}!')
-else:
-    print(f'You lose the best of {wins_to_win * 2 -1}!')
+#get winnner
+print(f"winner: {determine_win(score)}")

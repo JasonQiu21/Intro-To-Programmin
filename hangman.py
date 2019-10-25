@@ -81,6 +81,18 @@ def split(word):
     """split string into list"""
     return [char for char in word]
 
+def checkword(message, secret, guess):
+    """Check if guess is secret word, replace the elements of message with the guess letter"""
+    s_list = split(secret)
+    m_list = split(message)
+    for i in range(len(s_list)):
+        if s_list[i] == guess:
+            m_list.pop(i*2)
+            m_list.insert(i*2,guess)
+            message = ''.join(m_list)
+            return True
+    return False
+
 def hangman(secret):
     """Play hangman with word secret"""
     #initial conditions - letters guessed wrong, variables used in computation, splitting the secret into an array (easier to work with)
@@ -90,7 +102,6 @@ def hangman(secret):
     wrong_guesses = []
     correct = False #whether or not your last guess was correct
     message = "_ "*len(secret) #begins as just all underscores, then those underscores get replaced
-    s_list = split(secret)
     current_state = states[a] #the actual art that gets printed
     print(current_state)
     print(message)
@@ -100,14 +111,7 @@ def hangman(secret):
         #guess prompt
         guess = str(input("guess a letter:     "))
 
-        #check if guess is in the secret word
-        m_list = split(message)
-        for i in range(len(s_list)):
-            if s_list[i] == guess:
-                m_list.pop(i*2)
-                m_list.insert(i*2,guess)
-                message = ''.join(m_list)
-                correct = True
+        correct = checkword(message, secret, guess)
 
         #print the next round's stuff
         if correct == False: #If your guess is wrong
@@ -117,7 +121,7 @@ def hangman(secret):
             i -= 1
             current_state = states[a]
             print(current_state)
-            if a == 6:
+            if a == 6: #if all guesses are used up (hangman is fully drawn)
                 return False
             print(message)
         elif '_' in message and correct == True: #If your guess is right, and there are still letters to guess
@@ -125,7 +129,6 @@ def hangman(secret):
             print(message)
             correct = False
         else: #Win condition - last letter guessed is right, no empty spcaes.
-            i = 0
             return True
 win = hangman(secret)
 
