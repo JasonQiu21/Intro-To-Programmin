@@ -104,8 +104,8 @@ def get_secret_word():
     elif custom_or_dictionary == '2': #random dictionary word
         secret_word = r.get_random_word()
     else:
-        print('Error: reached unreachable stage', file=sys.stderr) #debug - input should be filtered to just '1' and '2'
-    
+        print('Impossible Error', file=sys.stderr) #debug - input should be filtered to just '1' and '2'
+        sys.exit()
     return secret_word
 
 def get_user_guess():
