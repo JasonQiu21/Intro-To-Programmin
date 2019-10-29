@@ -1,5 +1,8 @@
 import getpass
 import string
+import sys
+from random_word import RandomWords
+r = RandomWords()
 #Welcome to... HANGMAN
 print("welcome to...")
 print(""" _                                             
@@ -90,9 +93,19 @@ def check_ascii(word):
     return True
 
 def get_secret_word():
-    secret_word = str(getpass.getpass('Get someone else to give you a word:     ')).lower()
-    while check_ascii(secret_word) != True:
-        secret_word = str(getpass.getpass('Make sure the secret word is only the 26 english letters:     ')).lower()
+    """Generate secret word"""
+    custom_or_dictionary = str(input("custom word (1) or random word from dictionary (2)?     ")) # query to use a dictionary or secret word
+    while custom_or_dictionary != '1' and custom_or_dictionary != '2': # make sure that input is 1 or 2
+        custom_or_dictionary = str(input("type '1' or '2'"))
+    if custom_or_dictionary == '1': #custom word (find a friend)
+        secret_word = str(getpass.getpass('Get someone else to give you a word:     ')).lower()
+        while check_ascii(secret_word) != True:
+            secret_word = str(getpass.getpass('Make sure the secret word is only the 26 english letters:     ')).lower()
+    elif custom_or_dictionary == '2': #random dictionary word
+        secret_word = r.get_random_word()
+    else:
+        print('Error: reached unreachable stage', file=sys.stderr) #debug - input should be filtered to just '1' and '2'
+    
     return secret_word
 
 def get_user_guess():
@@ -115,7 +128,8 @@ message = "_ "*len(secret) #begins as just all underscores, then those underscor
 print(message)
 
 def checkword(secret, guess):
-    """Check if guess is secret word, replace the elements of message with the guess letter"""
+    """Check if guess is secret word, replace the elements of message with the guess letter
+        example: asdf in underscores (_ _ _ _) will become (a _ _ _) after guessing 'a' """
     global message
     s_list = split(secret)
     m_list = split(message)
@@ -129,7 +143,12 @@ def checkword(secret, guess):
     return x
 
 def score_count(secret):
-    """Guess, check if correct, then edit the wrong guesses"""
+    """Processes user guess to do the following:
+        - check whether or not it's in the function
+        - runs checkword
+        - if wrong, 'draws' the next body part, as well as appending wrong_guesses
+        - determines if you've met the win condition
+        """
     #initial conditions - letters guessed wrong, variables used in computation, splitting the secret into an array (easier to work with)
     
     global wrong_guesses
