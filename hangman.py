@@ -102,7 +102,9 @@ def get_secret_word():
         while check_ascii(secret_word) != True:
             secret_word = str(getpass.getpass('Make sure the secret word is only the 26 english letters:     ')).lower()
     elif custom_or_dictionary == '2': #random dictionary word
-        secret_word = r.get_random_word()
+        secret_word = r.get_random_word().lower()
+        while not check_ascii(secret_word): #if, for some reason, we have some sort of apostrophe or whatever in get_random_word()
+            secret_word = r.get_random_word().lower()
     else:
         print('Impossible Error', file=sys.stderr) #debug - input should be filtered to just '1' and '2'
         sys.exit()
@@ -133,8 +135,8 @@ def checkword(secret, guess):
     global message
     s_list = split(secret)
     m_list = split(message)
-    x = False
-    for i in range(len(s_list)):
+    x = False #remains false if guess is not in secret word
+    for i in range(len(s_list)): #replace all instances of guessed letter in the message
         if s_list[i] == guess:
             m_list.pop(i*2)
             m_list.insert(i*2,guess)
